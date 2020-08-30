@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:fisi_army/models/beneficio.dart';
 import 'package:fisi_army/pages/tabs/epg.dart';
 import 'package:fisi_army/pages/tabs/upg.dart';
+import 'package:fisi_army/utilities/rest_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fisi_army/pages/login_page.dart';
 import 'package:fisi_army/pages/recaudaciones_page.dart';
+import 'package:http/http.dart' as http;
 
 class PagosPage extends StatefulWidget {
   final String codigoAlumno;
@@ -21,6 +26,7 @@ class _PagosPageState extends State<PagosPage>
   @override
   void initState() {
     super.initState();
+    debugPrint(widget.codigoAlumno);
     EpgWidget();
     _controller = TabController(length: 2, vsync: this);
   }
@@ -45,7 +51,30 @@ class _PagosPageState extends State<PagosPage>
         ),
         body: Column(
           children: <Widget>[
-            descuento(),
+            FutureBuilder<List<Beneficio>>(
+              future: ApiService.fetchBeneficio(widget.codigoAlumno),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Beneficio> data = snapshot.data;
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: data == null ? 0 : data.length,
+                    itemBuilder: (context, index) {
+                      return descuento(data[index].benefOtrogado, data[index].autorizacion, data[index].condicion, data[index].fecha);
+                  });
+                }else{
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Text("0 Descuentos",
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
+                    )
+                  );
+                }
+              }
+            ),
             Container(
               padding: EdgeInsets.all(15),
               child: getTabBar(),
@@ -59,15 +88,59 @@ class _PagosPageState extends State<PagosPage>
     );
   }
 
-  Widget descuento() {
+  Widget descuento(int benef_otrogado, String autorizacion, String condicion, String fecha) {
+    return Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              dato("BENEFICIO", "${benef_otrogado}%")
+            ]
+          ),
+          SizedBox(height: 20),
+          Row(
+            children:<Widget> [
+              Padding(
+              padding: const EdgeInsets.all(7.0),
+              child: dato("AUTORIZACIÓN", "${autorizacion}"),
+              ),
+              Padding(
+              padding: const EdgeInsets.all(7.0),
+              child:
+              dato("CONDICIÓN", "${condicion}"),
+              ),
+              Padding(
+              padding: const EdgeInsets.all(7.0),
+              child:
+              dato("FECHA", "${fecha}"),
+              )
+            ]
+          )
+        ],
+      ),
+    );
+  }
+  Widget dato(String nombre,String valor){
     return Column(
       children: <Widget>[
-        Container(
-          child: Text("Descuento: ",
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-          height: 40,
+        Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(7.0),
+              child: Text("${nombre}",
+                style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500)),
+            )
+          ]
+        ),
+        Row(
+          children: <Widget>[
+            Text("${valor}",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500))
+          ]
         )
-      ],
+      ]
     );
   }
 

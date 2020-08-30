@@ -1,4 +1,5 @@
 import 'package:fisi_army/models/alumnoprograma.dart';
+import 'package:fisi_army/models/beneficio.dart';
 import 'package:fisi_army/models/usuarioLogin.dart';
 import 'package:fisi_army/models/recaudacionesAlumno.dart';
 import 'package:http/http.dart';
@@ -59,4 +60,21 @@ class ApiService {
       throw Exception('Failed to load jobs from API');
     }
   }
+
+  static Future<List<Beneficio>> fetchBeneficio(String codAlumno) async {
+    Response response = await http.get(
+        '${URLS.BASE_URL2}/beneficio/listar/$codAlumno');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List jsonResponse = json.decode(response.body);
+
+      print(jsonResponse);
+      return jsonResponse
+          .map((json) => new Beneficio.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
+
 }

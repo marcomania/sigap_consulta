@@ -6,7 +6,7 @@ class Beneficio {
   final String tipo;
   final String autorizacion;
   final String resolucion;
-  final String idBc;
+  final int idBc;
   final String condicion;
   final String fecha;
   final int idAbp;
@@ -36,7 +36,7 @@ class Beneficio {
       benefMax: json['benef_max'] as String,
       tipo: json['tipo'] as String,
       autorizacion: json['autorizacion'] as String,
-      idBc: json['id_bc'] as String,
+      idBc: json['id_bc'] as int,
       condicion: json['condicion'] as String,
       fecha: json['fecha'] as String,
       idAbp: json['id_abp'] as int,
