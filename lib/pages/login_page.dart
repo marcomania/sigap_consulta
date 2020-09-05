@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
       children: <Widget>[
         FlatButton(
           onPressed: () {
-            showAlertDialog(context);
+            createAlertCambiarContrasenia(context);
           },
           child: Text(
             "Cambiar mi contraseña",
@@ -298,6 +298,34 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  showAlertDialogCambioContrasenia(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text(
+        "Aceptar",
+        style: TextStyle(fontSize: 15.0),
+      ),
+      onPressed: () => Navigator.pop(context),
+      color: Colors.green,
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Cambio Su contraseña"),
+      content: Text("Ingrese con su nuevo possword"),
+      actions: [
+        okButton,
+      ],
+      elevation: 24.0,
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   showAlertDialogNoRecuperoContrasenia(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -328,6 +356,38 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
+
+  showAlertDialogNoCambioContrasenia(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text(
+        "Aceptar",
+        style: TextStyle(fontSize: 15.0),
+      ),
+      onPressed: () => Navigator.pop(context),
+      color: Colors.redAccent,
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Error"),
+      content: Text(
+          "No se pudo cambiar contraseña. Verifique que escribio bien los datos"),
+      actions: [
+        okButton,
+      ],
+      elevation: 24.0,
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   //Widget _buildSignUpBtn() {
   //  return Row(
   //    mainAxisAlignment: MainAxisAlignment.center,
@@ -361,6 +421,78 @@ class _LoginPageState extends State<LoginPage> {
   //    ],
   //  );
   //}
+  createAlertCambiarContrasenia(BuildContext context) {
+    var usuario, email, password;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Cambiar contraseña"),
+            content: Stack(
+              children: <Widget>[
+                Form(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TextField(
+                      decoration: InputDecoration(hintText: "Ingrese Usuario"),
+                      onChanged: (value) {
+                        setState(() {
+                          usuario = value;
+                        });
+                      },
+                    ),
+                    TextField(
+                      decoration: InputDecoration(hintText: "Ingrese Email"),
+                      onChanged: (value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
+                    ),
+                    TextField(
+                      decoration:
+                          InputDecoration(hintText: "Ingrese nueva contraseña"),
+                      onChanged: (value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
+                    ),
+                  ],
+                ))
+              ],
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                elevation: 0.5,
+                child: Text('Recuperar'),
+                onPressed: () async {
+                  //Relizar recuperacion
+                  var url =
+                      "https://sigapdev2-consultarecibos-back.herokuapp.com/usuario/alumnoprograma/actualizar/" +
+                          usuario +
+                          "/" +
+                          email +
+                          "/" +
+                          password;
+                  url = url.trim();
+                  debugPrint("cambair password: " + url);
+                  var response = await http.get(url);
+                  if (response.statusCode == 200) {
+                    debugPrint("recupero ok");
+                    Navigator.of(context).pop();
+                    showAlertDialogCambioContrasenia(context);
+                  } else {
+                    debugPrint("error al recupera");
+                    showAlertDialogNoCambioContrasenia(context);
+                  }
+                },
+              )
+            ],
+          );
+        });
+  }
 
   createAlertRecuperarContrasenia(BuildContext context) {
     var recuperarUsuario, recuperarEmail;
