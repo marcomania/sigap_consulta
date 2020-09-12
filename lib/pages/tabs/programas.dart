@@ -25,9 +25,7 @@ class ProgramasWidget extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-          return Center(
-            child:CircularProgressIndicator()
-          );
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -92,78 +90,80 @@ class CardWidget extends StatelessWidget {
                           'assets/tipGrado${programa.idTipGrado}.png'),
                     )),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "${programa.nomPrograma}",
-                        style: TextStyle(
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.vpn_key,
-                            color: kSecondaryColor,
-                            size: 20,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("${programa.codAlumno}",
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontSize: 14,
-                                  letterSpacing: .3)),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.school,
-                            color: kSecondaryColor,
-                            size: 20,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("${programa.siglaProg}",
-                              style: TextStyle(
-                                  color: kSecondaryColor,
-                                  //backgroundColor: Colors.black12,
-                                  fontSize: 14,
-                                  letterSpacing: .3)),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.today,
-                            color: kSecondaryColor,
-                            size: 20,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("${programa.anioIngreso}",
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontSize: 14,
-                                  letterSpacing: .3)),
-                        ],
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "${programa.nomPrograma}",
+                          style: TextStyle(
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.vpn_key,
+                              color: kSecondaryColor,
+                              size: 20,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text("${programa.codAlumno}",
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontSize: 14,
+                                    letterSpacing: .3)),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.school,
+                              color: kSecondaryColor,
+                              size: 20,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text("${programa.siglaProg}",
+                                style: TextStyle(
+                                    color: kSecondaryColor,
+                                    //backgroundColor: Colors.black12,
+                                    fontSize: 14,
+                                    letterSpacing: .3)),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.today,
+                              color: kSecondaryColor,
+                              size: 20,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text("${programa.anioIngreso}",
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontSize: 14,
+                                    letterSpacing: .3)),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Align(
