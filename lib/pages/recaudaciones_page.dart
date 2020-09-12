@@ -10,8 +10,9 @@ import '../utilities/rest_api.dart';
 
 class RecaudacionesPage extends StatelessWidget {
   final String idalumno;
+  final int tipo_recaudacion;
 
-  const RecaudacionesPage({Key key, this.idalumno}) : super(key: key);
+  const RecaudacionesPage({Key key, this.idalumno, this.tipo_recaudacion}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +22,6 @@ class RecaudacionesPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<RecaudacionesAlumno> data = snapshot.data;
-
             return buildList(context, data);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -39,7 +39,11 @@ class RecaudacionesPage extends StatelessWidget {
         shrinkWrap: true,
         itemCount: recaudacionesData.length,
         itemBuilder: (context, index) {
-          return CardWidget(recaudacion: recaudacionesData[index]);
+          if (recaudacionesData[index].cIdTipoRecaudacion == this.tipo_recaudacion) {
+            return CardWidget(recaudacion: recaudacionesData[index]);
+          } else {
+            return Divider(height: 2.0);
+          }
         });
   }
 }

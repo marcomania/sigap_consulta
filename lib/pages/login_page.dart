@@ -15,8 +15,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final usuarioController = TextEditingController(text: '08884699');
-  final passwordController = TextEditingController(text: '08884699');
+  final usuarioController = TextEditingController(text: '41149185');// 08884699
+  final passwordController = TextEditingController(text: '41149185');// 08884699
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
             createAlertRecuperarContrasenia(context);
           },
           child: Text(
-            "Olvide mi contraseña",
+            "Olvidé mi contraseña",
             style: TextStyle(
               decoration: TextDecoration.underline,
             ),

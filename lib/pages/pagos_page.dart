@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:fisi_army/models/beneficio.dart';
-import 'package:fisi_army/pages/tabs/epg.dart';
-import 'package:fisi_army/pages/tabs/upg.dart';
 import 'package:fisi_army/utilities/rest_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fisi_army/pages/login_page.dart';
@@ -27,8 +25,7 @@ class _PagosPageState extends State<PagosPage>
   void initState() {
     super.initState();
     debugPrint(widget.codigoAlumno);
-    EpgWidget();
-    _controller = TabController(length: 2, vsync: this);
+    _controller = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -149,10 +146,9 @@ class _PagosPageState extends State<PagosPage>
   TabBar getTabBar() {
     return TabBar(
       tabs: <Tab>[
-        Tab(
-          text: "UPG",
-        ),
-        Tab(text: "EPG")
+        Tab(text: "UPG"),
+        Tab(text: "EPG"),
+        Tab(text: "Enseñanza"),
       ],
       controller: _controller,
       labelColor: Colors.black,
@@ -164,8 +160,9 @@ class _PagosPageState extends State<PagosPage>
     return TabBarView(
       controller: _controller,
       children: <Widget>[
-        UpgWidget(),
-        RecaudacionesPage(idalumno: widget.codigoAlumno)
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 1),
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 2),
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 3)
       ],
     );
   }
