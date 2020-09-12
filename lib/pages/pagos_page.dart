@@ -62,6 +62,7 @@ class _PagosPageState extends State<PagosPage>
                         itemBuilder: (context, index) {
                           return descuento(
                               data[index].benefOtrogado,
+                              data[index].tipo,
                               data[index].autorizacion,
                               data[index].condicion,
                               data[index].fecha);
@@ -90,8 +91,8 @@ class _PagosPageState extends State<PagosPage>
     );
   }
 
-  Widget descuento( int benef_otrogado, String autorizacion, String condicion, String fecha) {
-    
+  Widget descuento( int benef_otrogado,String tipo, String autorizacion, String condicion, String fecha) {
+    String condicionM = condicion.toUpperCase();
     return Card(
           elevation: 3,
           child: Row(
@@ -116,10 +117,10 @@ class _PagosPageState extends State<PagosPage>
                                   fontSize: 40),
                             ),
                             Text(
-                              "Descuento",
+                              "DESCUENTO",
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.normal,fontSize: 20),
+                                  fontWeight: FontWeight.normal,fontSize: 18),
                             ),
                           ],
                         ),
@@ -142,7 +143,7 @@ class _PagosPageState extends State<PagosPage>
                       height: 13,
                     ),
                     Text(
-                      condicion,
+                      '${tipo} - ${condicionM}',
                       style: TextStyle(fontSize: 14, color: Colors.black87),
                     ),
                     SizedBox(
