@@ -90,42 +90,6 @@ class _PagosPageState extends State<PagosPage>
     );
   }
 
-  Widget descuento1( int benef_otrogado, String autorizacion, String condicion, String fecha) {
-    return Stack(children: [
-      Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[dato("BENEFICIO", "${benef_otrogado}%")]),
-            SizedBox(height: 20),
-            Row(children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(7.0),
-                child: dato("AUTORIZACIÓN", "${autorizacion}"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(7.0),
-                child: dato("CONDICIÓN", "${condicion}"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(7.0),
-                child: dato("FECHA", "${fecha}"),
-              )
-            ])
-          ],
-        ),
-      ),
-      ClipOval(
-        child: Container(
-          height: 5,
-          width: 5,
-          color: Colors.red,
-        ),
-      )
-    ]);
-  }
   Widget descuento( int benef_otrogado, String autorizacion, String condicion, String fecha) {
     
     return Card(
@@ -135,11 +99,6 @@ class _PagosPageState extends State<PagosPage>
               Container(
                 height: 125,
                 width: 110,
-                //padding:
-                //    EdgeInsets.only(left: 0, top: 10, bottom: 70, right: 20),
-                //decoration: BoxDecoration(
-                //    image: DecorationImage(
-                //        image: NetworkImage('https://es.calcuworld.com/wp-content/uploads/sites/2/2020/02/factor-descuento.png',scale: 0.1), fit: BoxFit.cover)),
                 child: benef_otrogado == null
                     ? Container()
                     : Container(
@@ -195,51 +154,7 @@ class _PagosPageState extends State<PagosPage>
                     ),
                     SizedBox(
                       height: 10,
-                    ),
-                    //Row(
-                    //  children: <Widget>[
-                    //    Icon(
-                    //      Icons.star,
-                    //      color: Colors.pink,
-                    //      size: 18,
-                    //    ),
-                    //    Icon(
-                    //      Icons.star,
-                    //      color: Colors.pink,
-                    //      size: 18,
-                    //    ),
-                    //    Icon(
-                    //      Icons.star,
-                    //      color: Colors.pink,
-                    //      size: 18,
-                    //    ),
-                    //    Icon(
-                    //      Icons.star,
-                    //      color: Colors.pink,
-                    //      size: 18,
-                    //    ),
-                    //    Icon(
-                    //      Icons.star,
-                    //      color: Colors.pink,
-                    //      size: 18,
-                    //    ),
-                    //  ],
-                    //),
-                    //Row(
-                    //  children: <Widget>[
-                    //    Text(
-                    //      item.ratings,
-                    //      style: TextStyle(fontSize: 13),
-                    //    ),
-                    //    SizedBox(
-                    //      width: 5,
-                    //    ),
-                    //    Text(
-                    //      "Ratings",
-                    //      style: TextStyle(fontSize: 13),
-                    //    ),
-                    //  ],
-                    //)
+                    )
                   ],
                 ),
               )
