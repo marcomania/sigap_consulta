@@ -1,3 +1,4 @@
+import 'package:fisi_army/pages/files_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -125,7 +126,26 @@ class _DetallePageState extends State<DetallePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.indigo,
         child: Icon(Icons.folder_open),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FilesPage(
+                      idTipoGrado: widget.recaudacion.idTipGrado +
+                          '.' +
+                          widget.recaudacion.siglaPrograma.split(" ").join(""),
+                      anioIngreso:
+                          widget.recaudacion.anioIngreso.split(" ").join(""),
+                      codAlumno: widget.recaudacion.codAlumno +
+                          "-" +
+                          widget.recaudacion.apeNom.split(" ").join("."),
+                      idRec: widget.recaudacion.idRec
+                          .toString()
+                          .split(" ")
+                          .join(""),
+                    )),
+          );
+        },
       ),
     );
   }
