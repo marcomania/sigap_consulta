@@ -5,6 +5,7 @@ import 'package:fisi_army/utilities/rest_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fisi_army/pages/login_page.dart';
 import 'package:fisi_army/pages/recaudaciones_page.dart';
+import 'package:fisi_army/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
 class PagosPage extends StatefulWidget {
@@ -89,8 +90,7 @@ class _PagosPageState extends State<PagosPage>
     );
   }
 
-  Widget descuento(
-      int benef_otrogado, String autorizacion, String condicion, String fecha) {
+  Widget descuento1( int benef_otrogado, String autorizacion, String condicion, String fecha) {
     return Stack(children: [
       Card(
         child: Column(
@@ -126,7 +126,128 @@ class _PagosPageState extends State<PagosPage>
       )
     ]);
   }
+  Widget descuento( int benef_otrogado, String autorizacion, String condicion, String fecha) {
+    
+    return Card(
+          elevation: 3,
+          child: Row(
+            children: <Widget>[
+              Container(
+                height: 125,
+                width: 110,
+                //padding:
+                //    EdgeInsets.only(left: 0, top: 10, bottom: 70, right: 20),
+                //decoration: BoxDecoration(
+                //    image: DecorationImage(
+                //        image: NetworkImage('https://es.calcuworld.com/wp-content/uploads/sites/2/2020/02/factor-descuento.png',scale: 0.1), fit: BoxFit.cover)),
+                child: benef_otrogado == null
+                    ? Container()
+                    : Container(
+                        color: kSecondaryColor,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              '${benef_otrogado} %',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 40),
+                            ),
+                            Text(
+                              "Descuento",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      autorizacion,
+                      style: TextStyle(
+                          color: kSecondaryColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 17),
+                    ),
+                    SizedBox(
+                      height: 13,
+                    ),
+                    Text(
+                      condicion,
+                      style: TextStyle(fontSize: 14, color: Colors.black87),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      fecha,
+                      style: TextStyle(fontSize: 14, color: Colors.black87),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    //Row(
+                    //  children: <Widget>[
+                    //    Icon(
+                    //      Icons.star,
+                    //      color: Colors.pink,
+                    //      size: 18,
+                    //    ),
+                    //    Icon(
+                    //      Icons.star,
+                    //      color: Colors.pink,
+                    //      size: 18,
+                    //    ),
+                    //    Icon(
+                    //      Icons.star,
+                    //      color: Colors.pink,
+                    //      size: 18,
+                    //    ),
+                    //    Icon(
+                    //      Icons.star,
+                    //      color: Colors.pink,
+                    //      size: 18,
+                    //    ),
+                    //    Icon(
+                    //      Icons.star,
+                    //      color: Colors.pink,
+                    //      size: 18,
+                    //    ),
+                    //  ],
+                    //),
+                    //Row(
+                    //  children: <Widget>[
+                    //    Text(
+                    //      item.ratings,
+                    //      style: TextStyle(fontSize: 13),
+                    //    ),
+                    //    SizedBox(
+                    //      width: 5,
+                    //    ),
+                    //    Text(
+                    //      "Ratings",
+                    //      style: TextStyle(fontSize: 13),
+                    //    ),
+                    //  ],
+                    //)
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
 
+  }
   Widget dato(String nombre, String valor) {
     return Column(children: <Widget>[
       Row(children: <Widget>[

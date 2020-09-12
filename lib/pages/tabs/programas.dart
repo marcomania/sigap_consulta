@@ -136,7 +136,7 @@ class CardWidget extends StatelessWidget {
                             ),
                             Text("${programa.siglaProg}",
                                 style: TextStyle(
-                                    color: kSecondaryColor,
+                                    color: kPrimaryColor,
                                     //backgroundColor: Colors.black12,
                                     fontSize: 14,
                                     letterSpacing: .3)),
