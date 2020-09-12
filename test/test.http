@@ -1,0 +1,12 @@
+@host = https://vidco-consultarecibos-back.herokuapp.com
+
+GET  {{host}}/usuario/alumnoprograma/buscar/08884699/08884699
+
+###
+GET  {{host}}/alumnoprograma/buscard/08884699
+
+###
+GET {{host}}/beneficio/listar/18207001
+
+###
+GET {{host}}/importealumno/search/18207001/8/21/3
