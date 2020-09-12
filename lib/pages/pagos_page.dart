@@ -52,29 +52,33 @@ class _PagosPageState extends State<PagosPage>
         body: Column(
           children: <Widget>[
             FutureBuilder<List<Beneficio>>(
-              future: ApiService.fetchBeneficio(widget.codigoAlumno),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<Beneficio> data = snapshot.data;
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: data == null ? 0 : data.length,
-                    itemBuilder: (context, index) {
-                      return descuento(data[index].benefOtrogado, data[index].autorizacion, data[index].condicion, data[index].fecha);
-                  });
-                }else{
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Text("0 Descuentos",
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-                    )
-                  );
-                }
-              }
-            ),
+                initialData: [],
+                future: ApiService.fetchBeneficio(widget.codigoAlumno),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Beneficio> data = snapshot.data;
+                    return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: data == null ? 0 : data.length,
+                        itemBuilder: (context, index) {
+                          return descuento(
+                              data[index].benefOtrogado,
+                              data[index].autorizacion,
+                              data[index].condicion,
+                              data[index].fecha);
+                        });
+                  } else {
+                    Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Text("0 Descuentos",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 20.0)),
+                        ));
+                  }
+                }),
             Container(
               padding: EdgeInsets.all(15),
               child: getTabBar(),
@@ -88,60 +92,58 @@ class _PagosPageState extends State<PagosPage>
     );
   }
 
-  Widget descuento(int benef_otrogado, String autorizacion, String condicion, String fecha) {
-    return Card(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              dato("BENEFICIO", "${benef_otrogado}%")
-            ]
-          ),
-          SizedBox(height: 20),
-          Row(
-            children:<Widget> [
+  Widget descuento(
+      int benef_otrogado, String autorizacion, String condicion, String fecha) {
+    return Stack(children: [
+      Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[dato("BENEFICIO", "${benef_otrogado}%")]),
+            SizedBox(height: 20),
+            Row(children: <Widget>[
               Padding(
-              padding: const EdgeInsets.all(7.0),
-              child: dato("AUTORIZACIÓN", "${autorizacion}"),
+                padding: const EdgeInsets.all(7.0),
+                child: dato("AUTORIZACIÓN", "${autorizacion}"),
               ),
               Padding(
-              padding: const EdgeInsets.all(7.0),
-              child:
-              dato("CONDICIÓN", "${condicion}"),
+                padding: const EdgeInsets.all(7.0),
+                child: dato("CONDICIÓN", "${condicion}"),
               ),
               Padding(
-              padding: const EdgeInsets.all(7.0),
-              child:
-              dato("FECHA", "${fecha}"),
+                padding: const EdgeInsets.all(7.0),
+                child: dato("FECHA", "${fecha}"),
               )
-            ]
-          )
-        ],
-      ),
-    );
-  }
-  Widget dato(String nombre,String valor){
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(7.0),
-              child: Text("${nombre}",
-                style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500)),
-            )
-          ]
+            ])
+          ],
         ),
-        Row(
-          children: <Widget>[
-            Text("${valor}",
-              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500))
-          ]
+      ),
+      ClipOval(
+        child: Container(
+          height: 5,
+          width: 5,
+          color: Colors.red,
+        ),
+      )
+    ]);
+  }
+
+  Widget dato(String nombre, String valor) {
+    return Column(children: <Widget>[
+      Row(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(7.0),
+          child: Text("${nombre}",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500)),
         )
-      ]
-    );
+      ]),
+      Row(children: <Widget>[
+        Text("${valor}",
+            style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500))
+      ])
+    ]);
   }
 
   TabBar getTabBar() {
