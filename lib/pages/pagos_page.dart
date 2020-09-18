@@ -26,7 +26,7 @@ class _PagosPageState extends State<PagosPage>
   void initState() {
     super.initState();
     debugPrint(widget.codigoAlumno);
-    _controller = TabController(length: 3, vsync: this);
+    _controller = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -91,79 +91,81 @@ class _PagosPageState extends State<PagosPage>
     );
   }
 
-  Widget descuento( int benef_otrogado,String tipo, String autorizacion, String condicion, String fecha) {
+  Widget descuento(int benef_otrogado, String tipo, String autorizacion,
+      String condicion, String fecha) {
     String condicionM = condicion.toUpperCase();
     return Card(
-          elevation: 3,
-          child: Row(
-            children: <Widget>[
-              Container(
-                height: 125,
-                width: 110,
-                child: benef_otrogado == null
-                    ? Container()
-                    : Container(
-                        color: kSecondaryColor,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              '${benef_otrogado} %',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 40),
-                            ),
-                            Text(
-                              "DESCUENTO",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,fontSize: 18),
-                            ),
-                          ],
+      elevation: 3,
+      child: Row(
+        children: <Widget>[
+          Container(
+            height: 125,
+            width: 110,
+            child: benef_otrogado == null
+                ? Container()
+                : Container(
+                    color: kSecondaryColor,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '${benef_otrogado} %',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 40),
                         ),
-                      ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      autorizacion,
-                      style: TextStyle(
-                          color: kSecondaryColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 17),
+                        Text(
+                          "DESCUENTO",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 18),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 13,
-                    ),
-                    Text(
-                      '${tipo} - ${condicionM}',
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      fecha,
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    )
-                  ],
-                ),
-              )
-            ],
+                  ),
           ),
-        );
-
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  autorizacion,
+                  style: TextStyle(
+                      color: kSecondaryColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 17),
+                ),
+                SizedBox(
+                  height: 13,
+                ),
+                Text(
+                  '${tipo} - ${condicionM}',
+                  style: TextStyle(fontSize: 14, color: Colors.black87),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  fecha,
+                  style: TextStyle(fontSize: 14, color: Colors.black87),
+                ),
+                SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
+
   Widget dato(String nombre, String valor) {
     return Column(children: <Widget>[
       Row(children: <Widget>[
@@ -186,6 +188,8 @@ class _PagosPageState extends State<PagosPage>
         Tab(text: "UPG"),
         Tab(text: "EPG"),
         Tab(text: "Enseñanza"),
+        Tab(text: "Repitencia"),
+        Tab(text: "Otros pagos")
       ],
       controller: _controller,
       labelColor: Colors.black,
@@ -199,7 +203,9 @@ class _PagosPageState extends State<PagosPage>
       children: <Widget>[
         RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 1),
         RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 2),
-        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 3)
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 3),
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 4),
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 5)
       ],
     );
   }
