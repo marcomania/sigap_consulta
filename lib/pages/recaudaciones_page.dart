@@ -15,6 +15,7 @@ class RecaudacionesPage extends StatelessWidget {
   double costo = 0.0;
   RecaudacionesPage({Key key, this.idalumno, this.tipo_recaudacion})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,6 +121,31 @@ class RecaudacionesPage extends StatelessWidget {
 
 class CardWidget extends StatelessWidget {
   final RecaudacionesAlumno recaudacion;
+  String num_idgrado(String id) {
+    String num;
+    if (id == 'DISI') {
+      num = '01';
+    } else if (id == 'GTIC') {
+      num = '02';
+    } else if (id == 'ISW') {
+      num = '03';
+    } else if (id == 'GIC') {
+      num = '04';
+    } else if (id == 'GTI') {
+      num = '05';
+    } else if (id == 'DGTI') {
+      num = '06';
+    } else if (id == 'SATD') {
+      num = '07';
+    } else if (id == 'ASTI') {
+      num = '08';
+    } else if (id == 'GPTI') {
+      num = '09';
+    } else if (id == 'GPGE') {
+      num = '10';
+    }
+    return num;
+  }
 
   const CardWidget({Key key, this.recaudacion}) : super(key: key);
 
@@ -281,7 +307,7 @@ class CardWidget extends StatelessWidget {
           margin: EdgeInsets.only(right: 3),
           child: FutureBuilder(
             future: ApiService.getFiles(
-                recaudacion.idTipGrado +
+                num_idgrado(recaudacion.siglaPrograma.split(" ").join("")) +
                     '.' +
                     recaudacion.siglaPrograma.split(" ").join(""),
                 recaudacion.anioIngreso.split(" ").join(""),

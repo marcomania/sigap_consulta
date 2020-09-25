@@ -36,6 +36,32 @@ class _DetallePageState extends State<DetallePage> {
 
   String extensionFile = '';
 
+  String num_idgrado(String id) {
+    String num;
+    if (id == 'DISI') {
+      num = '01';
+    } else if (id == 'GTIC') {
+      num = '02';
+    } else if (id == 'ISW') {
+      num = '03';
+    } else if (id == 'GIC') {
+      num = '04';
+    } else if (id == 'GTI') {
+      num = '05';
+    } else if (id == 'DGTI') {
+      num = '06';
+    } else if (id == 'SATD') {
+      num = '07';
+    } else if (id == 'ASTI') {
+      num = '08';
+    } else if (id == 'GPTI') {
+      num = '09';
+    } else if (id == 'GPGE') {
+      num = '10';
+    }
+    return num;
+  }
+
   @override
   Widget build(BuildContext context) {
     final _screenSize = MediaQuery.of(context).size;
@@ -43,6 +69,7 @@ class _DetallePageState extends State<DetallePage> {
     //     child: Center(
     //   child: Text("${recaudacion.descripcionRecaudacion}"),
     // ));
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Subir comprobante de recibo'),
@@ -131,7 +158,9 @@ class _DetallePageState extends State<DetallePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => FilesPage(
-                      idTipoGrado: widget.recaudacion.idTipGrado +
+                      idTipoGrado: num_idgrado(widget.recaudacion.siglaPrograma
+                              .split(" ")
+                              .join("")) +
                           '.' +
                           widget.recaudacion.siglaPrograma.split(" ").join(""),
                       anioIngreso:
@@ -177,17 +206,18 @@ class _DetallePageState extends State<DetallePage> {
     stream.cast();
     var length = await tmpFile.length();
 
-    String urii = (widget.recaudacion.idTipGrado +
-        '.' +
-        widget.recaudacion.siglaPrograma.split(" ").join("") +
-        '/' +
-        widget.recaudacion.anioIngreso.split(" ").join("") +
-        '/' +
-        widget.recaudacion.codAlumno +
-        "-" +
-        widget.recaudacion.apeNom.split(" ").join(".") +
-        '/' +
-        widget.recaudacion.idRec.toString().split(" ").join(""));
+    String urii =
+        (num_idgrado(widget.recaudacion.siglaPrograma.split(" ").join("")) +
+            '.' +
+            widget.recaudacion.siglaPrograma.split(" ").join("") +
+            '/' +
+            widget.recaudacion.anioIngreso.split(" ").join("") +
+            '/' +
+            widget.recaudacion.codAlumno +
+            "-" +
+            widget.recaudacion.apeNom.split(" ").join(".") +
+            '/' +
+            widget.recaudacion.idRec.toString().split(" ").join(""));
 
     var uri = Uri.parse(uploadEndPoint + urii);
     var request = new http.MultipartRequest("POST", uri);
