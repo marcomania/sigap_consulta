@@ -11,8 +11,9 @@ import '../utilities/rest_api.dart';
 class RecaudacionesPage extends StatelessWidget {
   final String idalumno;
   final int tipo_recaudacion;
-
-  const RecaudacionesPage({Key key, this.idalumno, this.tipo_recaudacion})
+  double pagado = 0.0;
+  double costo = 0.0;
+  RecaudacionesPage({Key key, this.idalumno, this.tipo_recaudacion})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,20 @@ class RecaudacionesPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<RecaudacionesAlumno> data = snapshot.data;
+            data.forEach((element) {
+              if (element.cIdTipoRecaudacion == this.tipo_recaudacion) {
+                this.costo = this.costo + element.importe;
+                if (element.validado) {
+                  //true
+                  this.pagado = this.pagado + element.importe;
+                }
+              }
+            });
+            print("costo: " +
+                this.costo.toString() +
+                " pagado: " +
+                this.pagado.toString());
+
             return buildList(context, data);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -35,18 +50,71 @@ class RecaudacionesPage extends StatelessWidget {
 
   Widget buildList(
       BuildContext context, List<RecaudacionesAlumno> recaudacionesData) {
-    return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: recaudacionesData.length,
-        itemBuilder: (context, index) {
-          if (recaudacionesData[index].cIdTipoRecaudacion ==
-              this.tipo_recaudacion) {
-            return CardWidget(recaudacion: recaudacionesData[index]);
-          } else {
-            return Divider(height: 2.0);
-          }
-        });
+    return Container(
+        child: Column(
+      children: [
+        descuento(this.costo, this.pagado, this.costo - this.pagado),
+        ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: recaudacionesData.length,
+            itemBuilder: (context, index) {
+              if (recaudacionesData[index].cIdTipoRecaudacion ==
+                  this.tipo_recaudacion) {
+                return CardWidget(recaudacion: recaudacionesData[index]);
+              } else {
+                return Divider(height: 2.0);
+              }
+            })
+      ],
+    ));
+  }
+
+  Widget descuento(
+    double costo,
+    double total_cancelado,
+    double deuda,
+  ) {
+    return Card(
+      elevation: 3,
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Costo ${costo}',
+                  style: TextStyle(
+                      color: kSecondaryColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 17),
+                ),
+                SizedBox(
+                  height: 13,
+                ),
+                Text(
+                  'Total Cancelado ${total_cancelado}',
+                  style: TextStyle(fontSize: 14, color: Colors.black87),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'Deuda actual ${deuda}',
+                  style: TextStyle(fontSize: 14, color: Colors.black87),
+                ),
+                SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -105,7 +173,7 @@ class CardWidget extends StatelessWidget {
                             ),
                             child: Center(
                               child: Image.asset(
-                                  'assets/tipGrado${recaudacion.idTipGrado}.png'),
+                                  'tipo_grado${recaudacion.cIdTipoRecaudacion}.png'),
                             )),
                         Container(
                           child: Column(

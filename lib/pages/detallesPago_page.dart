@@ -198,7 +198,7 @@ class _DetallePageState extends State<DetallePage> {
     request.files.add(multipartFile);
 
     var response = await request.send();
-    print(response.statusCode);
+    //print(response.statusCode);
     String status1 =
         response.statusCode == 200 ? 'Subio con éxito' : 'no subio';
     setStatus(status1);
