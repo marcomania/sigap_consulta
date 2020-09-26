@@ -68,7 +68,7 @@ class _PagosPageState extends State<PagosPage>
                               data[index].fecha);
                         });
                   } else {
-                    Align(
+                    return Align(
                         alignment: Alignment.bottomLeft,
                         child: Padding(
                           padding: EdgeInsets.all(8),
