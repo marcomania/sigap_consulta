@@ -125,7 +125,6 @@ Widget orden(String tipo,String data){
     ]
   ),
   );
-
 }
 class CardWidget extends StatelessWidget {
   final RecaudacionesAlumno recaudacion;
@@ -166,6 +165,7 @@ class CardWidget extends StatelessWidget {
 
     /* ApiService.getFiles(
         '01.DISI', '2020-1', '20207091-REYES.HUAMAN.ANITA.MARLENE');*/
+    String cIdTipoRecaudacion = recaudacion.cIdTipoRecaudacion.toString();
     return Stack(
       children: [
         Card(
@@ -209,7 +209,7 @@ class CardWidget extends StatelessWidget {
                               child: Hero(
                                 tag: recaudacion.idRec,
                                 child: Image.asset(
-                                  'tipo_grado${recaudacion.cIdTipoRecaudacion.toString()}.png'),
+                                  'assets/tipoConcepto${cIdTipoRecaudacion}.png'),
                               ),
                             )),
                         Container(

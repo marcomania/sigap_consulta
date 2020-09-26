@@ -69,11 +69,11 @@ flutter:
   - assets/sigap_logo.png
   - assets/white_logo.png
   - assets/portada_fisi.jpg
-  - assets/tipo_grado1.png
-  - assets/tipo_grado2.png
-  - assets/tipo_grado3.png
-  - assets/tipo_grado4.png
-  - assets/tipo_grado5.png
+  - assets/tipoConcepto1.png
+  - assets/tipoConcepto2.png
+  - assets/tipoConcepto3.png
+  - assets/tipoConcepto4.png
+  - assets/tipoConcepto5.png
 
 flutter_icons:
   image_path: 'assets/sigap_logo.png'
