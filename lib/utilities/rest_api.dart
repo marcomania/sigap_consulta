@@ -64,7 +64,7 @@ class ApiService {
 
   static Future<List<Beneficio>> fetchBeneficio(String codAlumno) async {
     Response response =
-        await http.get('${URLS.BASE_URL2}/beneficio/listar/$codAlumno');
+        await http.get('${URLS.BASE_URL}/beneficio/listar/$codAlumno');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       List jsonResponse = json.decode(response.body);

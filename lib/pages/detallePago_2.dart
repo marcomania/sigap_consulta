@@ -1,16 +1,14 @@
-import 'package:fisi_army/pages/files_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
-//import 'package:flutter/material.dart';
 
 import 'package:fisi_army/models/recaudacionesAlumno.dart';
-
+import 'package:fisi_army/utilities/arc_banner_image.dart';
 import 'pagos_page.dart';
-import 'recaudaciones_page.dart';
+import 'package:fisi_army/pages/files_page.dart';
 
 class DetallePage extends StatefulWidget {
   final RecaudacionesAlumno recaudacion;
@@ -65,10 +63,35 @@ class _DetallePageState extends State<DetallePage> {
   @override
   Widget build(BuildContext context) {
     final _screenSize = MediaQuery.of(context).size;
-    // return Container(
-    //     child: Center(
-    //   child: Text("${recaudacion.descripcionRecaudacion}"),
-    // ));
+
+    var movieInformation = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.recaudacion.nomPrograma,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          widget.recaudacion.apeNom,
+          style: TextStyle(
+            fontSize: 16,
+            //fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          'DNI: ' + widget.recaudacion.dni,
+          style: TextStyle(
+            fontSize: 16,
+            //fontWeight: FontWeight.bold,
+          ),
+        ),
+        //SizedBox(height: 12.0),
+        //Row(children: _buildCategoryChips(textTheme)),
+      ],
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -86,71 +109,7 @@ class _DetallePageState extends State<DetallePage> {
               );
             }),
       ),
-      body: Container(
-          child: Column(children: <Widget>[
-        SizedBox(
-          height: 20,
-        ),
-        mostrarDetallesRecaudacion(_screenSize),
-        Expanded(child: SizedBox()),
-        Row(
-          children: <Widget>[
-            Expanded(child: SizedBox()),
-            RaisedButton(
-              padding: EdgeInsets.all(15),
-              color: Colors.indigo,
-              onPressed: escogerFile,
-              shape: StadiumBorder(),
-              child: Container(
-                width: _screenSize.width * 0.38,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Icon(
-                      Icons.insert_drive_file,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'Cargar Archivo',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(child: SizedBox()),
-            RaisedButton(
-              padding: EdgeInsets.all(15),
-              color: Colors.indigo,
-              onPressed: uploadImage,
-              shape: StadiumBorder(),
-              child: Container(
-                width: _screenSize.width * 0.38,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Icon(Icons.cloud_upload, color: Colors.white),
-                    Text(
-                      'Subir Archivo',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(child: SizedBox()),
-          ],
-        ),
-        Expanded(child: SizedBox()),
-        mostrarFile(),
-        Expanded(child: SizedBox()),
-        Text(
-          status,
-          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
-        ),
-        Expanded(child: SizedBox()),
-      ])),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.indigo,
         child: Icon(Icons.folder_open),
         onPressed: () {
@@ -175,6 +134,172 @@ class _DetallePageState extends State<DetallePage> {
                     )),
           );
         },
+      ),*/
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 140.0),
+                  child: Hero(
+                    tag: widget.recaudacion.idRec,
+                    child: ArcBannerImage(
+                        'portada_fisi.jpg'), //'tipo_grado${widget.recaudacion.cIdTipoRecaudacion}.png'),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0.0,
+                  left: 16.0,
+                  right: 16.0,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(4.0),
+                        elevation: 2.0,
+                        child: Image.asset(
+                          'tipo_grado${widget.recaudacion.cIdTipoRecaudacion}.png',
+                          fit: BoxFit.scaleDown,
+                          width: 126.0,
+                          height: 180.0,
+                        ),
+                      ),
+                      SizedBox(width: 16.0),
+                      Expanded(child: movieInformation),
+                    ],
+                  ),
+                ),
+                Container(
+                    child: Column(children: <Widget>[
+                  SizedBox(
+                    height: 20,
+                  ),
+                  mostrarDetallesRecaudacion(_screenSize),
+                  //Expanded(child: SizedBox()),
+                  /*Row(
+                    children: <Widget>[
+                      Expanded(child: SizedBox()),
+                      RaisedButton(
+                        padding: EdgeInsets.all(15),
+                        color: Colors.indigo,
+                        onPressed: escogerFile,
+                        shape: StadiumBorder(),
+                        child: Container(
+                          width: _screenSize.width * 0.38,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Icon(
+                                Icons.insert_drive_file,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                'Cargar Archivo',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(child: SizedBox()),
+                      RaisedButton(
+                        padding: EdgeInsets.all(15),
+                        color: Colors.indigo,
+                        onPressed: uploadImage,
+                        shape: StadiumBorder(),
+                        child: Container(
+                          width: _screenSize.width * 0.38,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Icon(Icons.cloud_upload, color: Colors.white),
+                              Text(
+                                'Subir Archivo',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(child: SizedBox()),
+                    ],
+                  ),*/
+                  //Expanded(child: SizedBox()),
+                  mostrarFile(),
+                  //Expanded(child: SizedBox()),
+                  Text(
+                    status,
+                    style: TextStyle(
+                        color: Colors.grey, fontWeight: FontWeight.bold),
+                  ),
+                  //Expanded(child: SizedBox()),
+                ])),
+              ],
+            ),
+            Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SizedBox(height: 20.0) //Storyline(movie.storyline),
+                ),
+            //PhotoScroller(movie.photoUrls),
+            SizedBox(height: 20.0),
+            //ActorScroller(movie.actors),
+            SizedBox(height: 50.0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  mostrarDetallesRecaudacion(Size screenSize) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        height: screenSize.height * 0.40,
+        width: screenSize.width * 0.9,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          /*boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+            BoxShadow(
+              color: Colors.white.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: Offset(0, -1), // changes position of shadow
+            ),
+          ],*/
+        ),
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              title: Text('Codigo del Alumno :'),
+              subtitle: Text('${widget.recaudacion.codAlumno}'),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Nombre y Apellido :'),
+              subtitle: Text('${widget.recaudacion.apeNom}'),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Concepto :'),
+              subtitle: Text('${widget.recaudacion.concepto}'),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Recaudacion ID :'),
+              subtitle: Text('${widget.recaudacion.idRec}'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -290,63 +415,7 @@ class _DetallePageState extends State<DetallePage> {
       },
     );
   }
-
-  mostrarDetallesRecaudacion(Size screenSize) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        height: screenSize.height * 0.40,
-        width: screenSize.width * 0.9,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          /*boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-            BoxShadow(
-              color: Colors.white.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: Offset(0, -1), // changes position of shadow
-            ),
-          ],*/
-        ),
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: Text('Codigo del Alumno :'),
-              subtitle: Text('${widget.recaudacion.codAlumno}'),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Nombre y Apellido :'),
-              subtitle: Text('${widget.recaudacion.apeNom}'),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Concepto :'),
-              subtitle: Text('${widget.recaudacion.concepto}'),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Concepto y numero  :'),
-              subtitle: Text(widget.recaudacion.concepto +
-                  ' - ' +
-                  widget.recaudacion.numero),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
-
-//--------------------------------------------------------------------------
 
 class CardFile extends StatelessWidget {
   String pathFile;

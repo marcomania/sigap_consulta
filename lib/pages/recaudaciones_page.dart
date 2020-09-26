@@ -34,9 +34,9 @@ class RecaudacionesPage extends StatelessWidget {
                 }
               }
             });
-            print("costo: " +
+            print("costo : " +
                 this.costo.toString() +
-                " pagado: " +
+                " pagado : " +
                 this.pagado.toString());
 
             return buildList(context, data);
@@ -198,8 +198,11 @@ class CardWidget extends StatelessWidget {
                                   width: 3, color: Colors.indigo[900]),
                             ),
                             child: Center(
-                              child: Image.asset(
-                                  'tipo_grado${recaudacion.cIdTipoRecaudacion}.png'),
+                              child: Hero(
+                                tag: recaudacion.idRec,
+                                child: Image.asset(
+                                    'tipo_grado${recaudacion.cIdTipoRecaudacion}.png'),
+                              ),
                             )),
                         Container(
                           child: Column(

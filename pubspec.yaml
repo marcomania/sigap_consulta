@@ -68,6 +68,7 @@ flutter:
   - assets/sigap.png
   - assets/sigap_logo.png
   - assets/white_logo.png
+  - assets/portada_fisi.jpg
 
 flutter_icons:
   image_path: 'assets/sigap_logo.png'
