@@ -5,8 +5,6 @@ import 'package:fisi_army/utilities/constants.dart';
 import 'package:fisi_army/pages/detallePago_2.dart';
 
 import '../utilities/rest_api.dart';
-import '../utilities/rest_api.dart';
-import '../utilities/rest_api.dart';
 
 class RecaudacionesPage extends StatelessWidget {
   final String idalumno;
@@ -83,33 +81,12 @@ class RecaudacionesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  'Costo ${costo}',
-                  style: TextStyle(
-                      color: kSecondaryColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 17),
-                ),
-                SizedBox(
-                  height: 13,
-                ),
-                Text(
-                  'Total Cancelado ${total_cancelado}',
-                  style: TextStyle(fontSize: 14, color: Colors.black87),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Deuda actual ${deuda}',
-                  style: TextStyle(fontSize: 14, color: Colors.black87),
-                ),
-                SizedBox(
-                  height: 10,
-                )
+                orden('COSTO', '$costo'),
+                orden('TOTAL CANCELADO', '$total_cancelado'),
+                orden('DEUDA ACTUAL', '$deuda')
               ],
             ),
           )
@@ -118,7 +95,37 @@ class RecaudacionesPage extends StatelessWidget {
     );
   }
 }
-
+Widget orden(String tipo,String data){
+  return Container(
+  child: Row(
+    children: [
+      Column(
+        children: [
+          Text(
+            '$tipo',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 17),
+          )
+        ],
+      ),
+      Column(
+        children: [
+          Text(
+            'S/. $data',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w700,
+              fontSize: 17,
+              backgroundColor: Colors.blueAccent[300]),
+          )
+        ],
+      )
+    ]
+  ),
+  );
+}
 class CardWidget extends StatelessWidget {
   final RecaudacionesAlumno recaudacion;
   String num_idgrado(String id) {
@@ -158,6 +165,7 @@ class CardWidget extends StatelessWidget {
 
     /* ApiService.getFiles(
         '01.DISI', '2020-1', '20207091-REYES.HUAMAN.ANITA.MARLENE');*/
+    String cIdTipoRecaudacion = recaudacion.cIdTipoRecaudacion.toString();
     return Stack(
       children: [
         Card(
@@ -201,7 +209,7 @@ class CardWidget extends StatelessWidget {
                               child: Hero(
                                 tag: recaudacion.idRec,
                                 child: Image.asset(
-                                    'tipo_grado${recaudacion.cIdTipoRecaudacion}.png'),
+                                  'assets/tipoConcepto${cIdTipoRecaudacion}.png'),
                               ),
                             )),
                         Container(
@@ -219,7 +227,7 @@ class CardWidget extends StatelessWidget {
                                     width: 5,
                                   ),
                                   Text(
-                                    "${recaudacion.descripcion_recaudacion}",
+                                    "${recaudacion.numero}",
                                     style: TextStyle(
                                         color: kPrimaryColor,
                                         fontWeight: FontWeight.bold,
