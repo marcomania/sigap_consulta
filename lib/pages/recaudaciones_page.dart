@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fisi_army/models/recaudacionesAlumno.dart';
 import 'package:fisi_army/utilities/rest_api.dart';
 import 'package:fisi_army/utilities/constants.dart';
-import 'package:fisi_army/pages/detallesPago_page.dart';
+import 'package:fisi_army/pages/detallePago_2.dart';
 
 import '../utilities/rest_api.dart';
 import '../utilities/rest_api.dart';
