@@ -10,6 +10,7 @@ import 'package:fisi_army/utilities/arc_banner_image.dart';
 import 'pagos_page.dart';
 import 'package:fisi_army/pages/files_page.dart';
 import 'package:fisi_army/utilities/constants.dart';
+import 'package:fisi_army/utilities/rest_api.dart';
 
 class DetallePage extends StatefulWidget {
   final RecaudacionesAlumno recaudacion;
@@ -22,7 +23,7 @@ class DetallePage extends StatefulWidget {
 
 class _DetallePageState extends State<DetallePage> {
   static final String uploadEndPoint =
-      'https://vidco-consultarecibos-back.herokuapp.com/v1/storage/uploadFile/';
+      '${URLS.BASE_URL}/v1/storage/uploadFile/';
   Future<File> file;
 
   String status = '';
