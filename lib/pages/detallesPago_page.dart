@@ -1,16 +1,15 @@
-import 'package:fisi_army/pages/files_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
-//import 'package:flutter/material.dart';
 
 import 'package:fisi_army/models/recaudacionesAlumno.dart';
-
+import 'package:fisi_army/utilities/arc_banner_image.dart';
 import 'pagos_page.dart';
-import 'recaudaciones_page.dart';
+import 'package:fisi_army/pages/files_page.dart';
+import 'package:fisi_army/utilities/constants.dart';
 
 class DetallePage extends StatefulWidget {
   final RecaudacionesAlumno recaudacion;
@@ -36,7 +35,7 @@ class _DetallePageState extends State<DetallePage> {
 
   String extensionFile = '';
 
-  String num_idgrado(String id) {
+  String numIdGrado(String id) {
     String num;
     if (id == 'DISI') {
       num = '01';
@@ -65,10 +64,35 @@ class _DetallePageState extends State<DetallePage> {
   @override
   Widget build(BuildContext context) {
     final _screenSize = MediaQuery.of(context).size;
-    // return Container(
-    //     child: Center(
-    //   child: Text("${recaudacion.descripcionRecaudacion}"),
-    // ));
+
+    var movieInformation = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.recaudacion.nomPrograma,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          widget.recaudacion.apeNom,
+          style: TextStyle(
+            fontSize: 16,
+            //fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          'DNI: ' + widget.recaudacion.dni,
+          style: TextStyle(
+            fontSize: 16,
+            //fontWeight: FontWeight.bold,
+          ),
+        ),
+        //SizedBox(height: 12.0),
+        //Row(children: _buildCategoryChips(textTheme)),
+      ],
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -86,70 +110,6 @@ class _DetallePageState extends State<DetallePage> {
               );
             }),
       ),
-      body: Container(
-          child: Column(children: <Widget>[
-        SizedBox(
-          height: 20,
-        ),
-        mostrarDetallesRecaudacion(_screenSize),
-        Expanded(child: SizedBox()),
-        Row(
-          children: <Widget>[
-            Expanded(child: SizedBox()),
-            RaisedButton(
-              padding: EdgeInsets.all(15),
-              color: Colors.indigo,
-              onPressed: escogerFile,
-              shape: StadiumBorder(),
-              child: Container(
-                width: _screenSize.width * 0.38,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Icon(
-                      Icons.insert_drive_file,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'Cargar Archivo',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(child: SizedBox()),
-            RaisedButton(
-              padding: EdgeInsets.all(15),
-              color: Colors.indigo,
-              onPressed: uploadImage,
-              shape: StadiumBorder(),
-              child: Container(
-                width: _screenSize.width * 0.38,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Icon(Icons.cloud_upload, color: Colors.white),
-                    Text(
-                      'Subir Archivo',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(child: SizedBox()),
-          ],
-        ),
-        Expanded(child: SizedBox()),
-        mostrarFile(),
-        Expanded(child: SizedBox()),
-        Text(
-          status,
-          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
-        ),
-        Expanded(child: SizedBox()),
-      ])),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.indigo,
         child: Icon(Icons.folder_open),
@@ -158,7 +118,7 @@ class _DetallePageState extends State<DetallePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => FilesPage(
-                      idTipoGrado: num_idgrado(widget.recaudacion.siglaPrograma
+                      idTipoGrado: numIdGrado(widget.recaudacion.siglaPrograma
                               .split(" ")
                               .join("")) +
                           '.' +
@@ -176,7 +136,340 @@ class _DetallePageState extends State<DetallePage> {
           );
         },
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 140.0),
+                  child: ArcBannerImage('assets/portada_fisi.jpg'),
+                ),
+                Positioned(
+                  bottom: 0.0,
+                  left: 16.0,
+                  right: 16.0,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(4.0),
+                        elevation: 2.0,
+                        child: Hero(
+                          tag: widget.recaudacion.idRec,
+                          child: Image.asset(
+                            'assets/tipoConcepto${widget.recaudacion.cIdTipoRecaudacion}.png',
+                            fit: BoxFit.scaleDown,
+                            width: 126.0,
+                            height: 180.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16.0),
+                      Expanded(child: movieInformation),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.0),
+            mostrarDetallesRecaudacion(_screenSize),
+            SizedBox(height: 40.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(child: SizedBox()),
+                RaisedButton(
+                  padding: EdgeInsets.all(15),
+                  color: Colors.indigo,
+                  onPressed: escogerFile,
+                  shape: StadiumBorder(),
+                  child: Container(
+                    width: _screenSize.width * 0.38,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Icon(
+                          Icons.insert_drive_file,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'Cargar Archivo',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                RaisedButton(
+                  padding: EdgeInsets.all(15),
+                  color: Colors.indigo,
+                  onPressed: uploadImage,
+                  shape: StadiumBorder(),
+                  child: Container(
+                    width: _screenSize.width * 0.38,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Icon(Icons.cloud_upload, color: Colors.white),
+                        Text(
+                          'Subir Archivo',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.0),
+            mostrarFile(),
+            SizedBox(height: 100.0),
+          ],
+        ),
+        //poner
+      ),
     );
+  }
+
+  mostrarDetallesRecaudacion(Size screenSize) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ClipPath(
+        child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          child: Column(
+            children: <Widget>[
+              Container(
+                //height: 65,
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    border: Border(
+                        right: BorderSide(
+                            color: _calcularColor(widget.recaudacion.validado),
+                            width: 10))),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.comment,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Numero : ${widget.recaudacion.numero}",
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.description,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  "Recaudación : ${widget.recaudacion.descripcionRecaudacion}",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 14,
+                                      letterSpacing: .3)),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.folder_shared,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  "Codigo de Alumno : ${widget.recaudacion.codAlumno}",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 14,
+                                      letterSpacing: .3)),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.description,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  "Ubicación : ${widget.recaudacion.descripcionUbi}",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 14,
+                                      letterSpacing: .3)),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.description,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  "Tipo : ${widget.recaudacion.descripcionTipo}",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 14,
+                                      letterSpacing: .3)),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.comment,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  "Observación : ${widget.recaudacion.observacion.trim()}",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 14,
+                                      letterSpacing: .3)),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.comment,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                  "Observación UPG : ${widget.recaudacion?.observacionUpg ?? ""}",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 14,
+                                      letterSpacing: .3)),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.today,
+                                color: kSecondaryColor,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text("Fecha : ${widget.recaudacion.fecha}",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 14,
+                                      letterSpacing: .3)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: SizedBox(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding * 1.5, // 30 padding
+                          vertical: kDefaultPadding / 4, // 5 top and bottom
+                        ),
+                        decoration: BoxDecoration(
+                          color: kDetail1,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(0),
+                            topRight: Radius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          "CONCEPTO: ${widget.recaudacion.concepto.trim()}",
+                          style: TextStyle(
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding * 1.5, // 30 padding
+                          vertical: kDefaultPadding / 4, // 5 top and bottom
+                        ),
+                        decoration: BoxDecoration(
+                          color: kDetail2,
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(0),
+                            topLeft: Radius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          "S/. ${widget.recaudacion.importe.toStringAsFixed(2)}",
+                          style: TextStyle(
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _calcularColor(bool validado) {
+    if (validado == true)
+      return Colors.green;
+    else
+      return Colors.red;
   }
 
   escogerFile() {
@@ -194,11 +487,13 @@ class _DetallePageState extends State<DetallePage> {
   }
 
   String stripExtension(String str) {
-    if (str == null) return null;
-
-    if (str.lastIndexOf(".") != -1 && str.lastIndexOf(".") != 0) {
+    if (str == null) {
+      return null;
+    } else if (str.lastIndexOf(".") != -1 && str.lastIndexOf(".") != 0) {
       return str.substring(str.lastIndexOf("."));
     }
+
+    return null;
   }
 
   Future uploadImage() async {
@@ -207,7 +502,7 @@ class _DetallePageState extends State<DetallePage> {
     var length = await tmpFile.length();
 
     String urii =
-        (num_idgrado(widget.recaudacion.siglaPrograma.split(" ").join("")) +
+        (numIdGrado(widget.recaudacion.siglaPrograma.split(" ").join("")) +
             '.' +
             widget.recaudacion.siglaPrograma.split(" ").join("") +
             '/' +
@@ -290,68 +585,12 @@ class _DetallePageState extends State<DetallePage> {
       },
     );
   }
-
-  mostrarDetallesRecaudacion(Size screenSize) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        height: screenSize.height * 0.40,
-        width: screenSize.width * 0.9,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          /*boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-            BoxShadow(
-              color: Colors.white.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: Offset(0, -1), // changes position of shadow
-            ),
-          ],*/
-        ),
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: Text('Codigo del Alumno :'),
-              subtitle: Text('${widget.recaudacion.codAlumno}'),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Nombre y Apellido :'),
-              subtitle: Text('${widget.recaudacion.apeNom}'),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Concepto :'),
-              subtitle: Text('${widget.recaudacion.concepto}'),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Concepto y numero  :'),
-              subtitle: Text(widget.recaudacion.concepto +
-                  ' - ' +
-                  widget.recaudacion.numero),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
-//--------------------------------------------------------------------------
-
 class CardFile extends StatelessWidget {
-  String pathFile;
+  final String pathFile;
   // File imagenFile;
-  Image imagenFile;
+  final Image imagenFile;
 
   CardFile({@required this.pathFile, this.imagenFile});
   @override

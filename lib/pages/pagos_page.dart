@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:fisi_army/models/beneficio.dart';
 import 'package:fisi_army/utilities/rest_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fisi_army/pages/login_page.dart';
 import 'package:fisi_army/pages/recaudaciones_page.dart';
 import 'package:fisi_army/utilities/constants.dart';
-import 'package:http/http.dart' as http;
 
 class PagosPage extends StatefulWidget {
   final String codigoAlumno;
@@ -91,7 +88,7 @@ class _PagosPageState extends State<PagosPage>
     );
   }
 
-  Widget descuento(int benef_otrogado, String tipo, String autorizacion,
+  Widget descuento(int benefOtorgado, String tipo, String autorizacion,
       String condicion, String fecha) {
     String condicionM = condicion.toUpperCase();
     return Card(
@@ -101,7 +98,7 @@ class _PagosPageState extends State<PagosPage>
           Container(
             height: 125,
             width: 110,
-            child: benef_otrogado == null
+            child: benefOtorgado == null
                 ? Container()
                 : Container(
                     color: kSecondaryColor,
@@ -111,7 +108,7 @@ class _PagosPageState extends State<PagosPage>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '${benef_otrogado} %',
+                          benefOtorgado.toString(),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.normal,
@@ -145,7 +142,7 @@ class _PagosPageState extends State<PagosPage>
                   height: 13,
                 ),
                 Text(
-                  '${tipo} - ${condicionM}',
+                  tipo + '-' + condicionM,
                   style: TextStyle(fontSize: 14, color: Colors.black87),
                 ),
                 SizedBox(
@@ -171,12 +168,12 @@ class _PagosPageState extends State<PagosPage>
       Row(children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(7.0),
-          child: Text("${nombre}",
+          child: Text(nombre,
               style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500)),
         )
       ]),
       Row(children: <Widget>[
-        Text("${valor}",
+        Text(valor,
             style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500))
       ])
     ]);
@@ -201,11 +198,11 @@ class _PagosPageState extends State<PagosPage>
     return TabBarView(
       controller: _controller,
       children: <Widget>[
-        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 1),
-        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 2),
-        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 3),
-        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 4),
-        RecaudacionesPage(idalumno: widget.codigoAlumno, tipo_recaudacion: 5)
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipoRecaudacion: 1),
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipoRecaudacion: 2),
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipoRecaudacion: 3),
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipoRecaudacion: 4),
+        RecaudacionesPage(idalumno: widget.codigoAlumno, tipoRecaudacion: 5)
       ],
     );
   }

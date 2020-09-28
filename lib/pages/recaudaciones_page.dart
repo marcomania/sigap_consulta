@@ -2,29 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:fisi_army/models/recaudacionesAlumno.dart';
 import 'package:fisi_army/utilities/rest_api.dart';
 import 'package:fisi_army/utilities/constants.dart';
-import 'package:fisi_army/pages/detallePago_2.dart';
+import 'package:fisi_army/pages/detallesPago_page.dart';
 
 import '../utilities/rest_api.dart';
 
-class RecaudacionesPage extends StatelessWidget {
+class RecaudacionesPage extends StatefulWidget {
   final String idalumno;
-  final int tipo_recaudacion;
+  final int tipoRecaudacion;
+  RecaudacionesPage({Key key, this.idalumno, this.tipoRecaudacion})
+      : super(key: key);
+  @override
+  _RecaudacionesPageState createState() => _RecaudacionesPageState();
+}
+
+class _RecaudacionesPageState extends State<RecaudacionesPage>
+    with AutomaticKeepAliveClientMixin<RecaudacionesPage> {
   double pagado = 0.0;
   double costo = 0.0;
-  RecaudacionesPage({Key key, this.idalumno, this.tipo_recaudacion})
-      : super(key: key);
+
+  Future<List<RecaudacionesAlumno>> _loadList() async {
+    return ApiService.fetchRecaudaciones(widget.idalumno);
+  }
+
+  @override
+  void initState() {
+    _loadList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: FutureBuilder<List<RecaudacionesAlumno>>(
-        future: ApiService.fetchRecaudaciones(idalumno),
+        future: _loadList(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<RecaudacionesAlumno> data = snapshot.data;
             data.forEach((element) {
-              if (element.cIdTipoRecaudacion == this.tipo_recaudacion) {
+              if (element.cIdTipoRecaudacion == widget.tipoRecaudacion) {
                 this.costo = this.costo + element.importe;
                 if (element.validado) {
                   //true
@@ -53,25 +70,26 @@ class RecaudacionesPage extends StatelessWidget {
         child: Column(
       children: [
         descuento(this.costo, this.pagado, this.costo - this.pagado),
-        ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: recaudacionesData.length,
-            itemBuilder: (context, index) {
-              if (recaudacionesData[index].cIdTipoRecaudacion ==
-                  this.tipo_recaudacion) {
-                return CardWidget(recaudacion: recaudacionesData[index]);
-              } else {
-                return Divider(height: 2.0);
-              }
-            })
+        Expanded(
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: recaudacionesData.length,
+              itemBuilder: (context, index) {
+                if (recaudacionesData[index].cIdTipoRecaudacion ==
+                    widget.tipoRecaudacion) {
+                  return CardWidget(recaudacion: recaudacionesData[index]);
+                } else {
+                  return Divider(height: 2.0);
+                }
+              }),
+        )
       ],
     ));
   }
 
   Widget descuento(
     double costo,
-    double total_cancelado,
+    double totalCancelado,
     double deuda,
   ) {
     return Card(
@@ -81,11 +99,11 @@ class RecaudacionesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 orden('COSTO', '$costo'),
-                orden('TOTAL CANCELADO', '$total_cancelado'),
+                orden('TOTAL CANCELADO', '$totalCancelado'),
                 orden('DEUDA ACTUAL', '$deuda')
               ],
             ),
@@ -94,41 +112,42 @@ class RecaudacionesPage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
-Widget orden(String tipo,String data){
+
+Widget orden(String tipo, String data) {
   return Container(
-  child: Row(
-    children: [
+    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Column(
         children: [
           Text(
-            '$tipo',
+            '$tipo :',
             style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 17),
+                color: kTextColor, fontWeight: FontWeight.w700, fontSize: 17),
           )
         ],
       ),
       Column(
         children: [
           Text(
-            'S/. $data',
+            ' S/. $data',
             style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w700,
-              fontSize: 17,
-              backgroundColor: Colors.blueAccent[300]),
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                fontSize: 17,
+                backgroundColor: Colors.blueAccent[300]),
           )
         ],
       )
-    ]
-  ),
+    ]),
   );
 }
+
 class CardWidget extends StatelessWidget {
   final RecaudacionesAlumno recaudacion;
-  String num_idgrado(String id) {
+  String numIdGrado(String id) {
     String num;
     if (id == 'DISI') {
       num = '01';
@@ -208,8 +227,9 @@ class CardWidget extends StatelessWidget {
                             child: Center(
                               child: Hero(
                                 tag: recaudacion.idRec,
-                                child: Image.asset(
-                                  'assets/tipoConcepto${cIdTipoRecaudacion}.png'),
+                                child: Image.asset('assets/tipoConcepto' +
+                                    cIdTipoRecaudacion +
+                                    '.png'),
                               ),
                             )),
                         Container(
@@ -318,7 +338,7 @@ class CardWidget extends StatelessWidget {
           margin: EdgeInsets.only(right: 3),
           child: FutureBuilder(
             future: ApiService.getFiles(
-                num_idgrado(recaudacion.siglaPrograma.split(" ").join("")) +
+                numIdGrado(recaudacion.siglaPrograma.split(" ").join("")) +
                     '.' +
                     recaudacion.siglaPrograma.split(" ").join(""),
                 recaudacion.anioIngreso.split(" ").join(""),

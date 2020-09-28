@@ -70,10 +70,8 @@ class CardWidget extends StatelessWidget {
                 top: kDefaultPadding // 5 top and bottom
                 ),
             decoration: BoxDecoration(
-                border: Border(
-                    right: BorderSide(
-                        color: Colors.green,
-                        width: .5))), //TODO: Borde Derecho (pensar)
+                border:
+                    Border(right: BorderSide(color: Colors.green, width: .5))),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

@@ -1,7 +1,7 @@
 class RecaudacionesAlumno {
   final int rIdTipoRecaudacion;
   final int cIdTipoRecaudacion;
-  final String descripcion_recaudacion;
+  final String descripcionRecaudacion;
 
   final int idRec;
   final int idAlum;
@@ -36,7 +36,7 @@ class RecaudacionesAlumno {
   RecaudacionesAlumno(
       {this.rIdTipoRecaudacion,
       this.cIdTipoRecaudacion,
-      this.descripcion_recaudacion,
+      this.descripcionRecaudacion,
       this.idRec,
       this.idAlum,
       this.apeNom,
@@ -71,7 +71,7 @@ class RecaudacionesAlumno {
     return RecaudacionesAlumno(
       rIdTipoRecaudacion: json['r_id_tipo_recaudacion'] as int,
       cIdTipoRecaudacion: json['c_id_tipo_recaudacion'] as int,
-      descripcion_recaudacion: json['descripcion_recaudacion'] as String,
+      descripcionRecaudacion: json['descripcion_recaudacion'] as String,
       idRec: json['idRec'] as int,
       idAlum: json['idAlum'] as int,
       apeNom: json['apeNom'] as String,

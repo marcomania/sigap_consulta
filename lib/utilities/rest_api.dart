@@ -1,6 +1,5 @@
 import 'package:fisi_army/models/alumnoprograma.dart';
 import 'package:fisi_army/models/beneficio.dart';
-import 'package:fisi_army/models/file_model.dart';
 import 'package:fisi_army/models/usuarioLogin.dart';
 import 'package:fisi_army/models/recaudacionesAlumno.dart';
 import 'package:http/http.dart';
@@ -82,18 +81,18 @@ class ApiService {
         '${URLS.BASE_URL}/v1/storage/getFileFromFolder/$tipoGrado/$anioIngreso/$codigoNombre/$idRecaudacion');
 
     List decodedData = json.decode(response.body);
-    List files_Rec = List();
+    List filesRec = List();
 
     if (decodedData.isNotEmpty) {
       decodedData.forEach((element) {
-        files_Rec.add(element['url']);
+        filesRec.add(element['url']);
       });
-      print(files_Rec);
+      print(filesRec);
     } else {
       print('[]');
       return [];
     }
 
-    return files_Rec;
+    return filesRec;
   }
 }

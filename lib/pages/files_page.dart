@@ -96,5 +96,7 @@ class FilesPage extends StatelessWidget {
     if (str.lastIndexOf(".") != -1 && str.lastIndexOf(".") != 0) {
       return str.substring(str.lastIndexOf("."));
     }
+
+    return null;
   }
 }
