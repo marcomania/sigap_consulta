@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
+import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 
@@ -519,7 +520,7 @@ class _DetallePageState extends State<DetallePage> {
     var request = new http.MultipartRequest("POST", uri);
 
     var multipartFile = new http.MultipartFile('file', stream, length,
-        filename: basename(tmpFile.path));
+        filename: p.basename(tmpFile.path));
 
     request.files.add(multipartFile);
 
